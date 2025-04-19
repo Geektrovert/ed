@@ -2,7 +2,7 @@ import { EditorBubble, removeAIHighlight, useEditor } from "novel";
 import { Fragment, type ReactNode, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Magic from "@/components/icons/magic";
-import { AISelector } from "@/components/generative/ai-selector";
+import { AISelector } from "@/components/editor/extensions/generative/ai-selector";
 
 interface GenerativeMenuSwitchProps {
   children: ReactNode;

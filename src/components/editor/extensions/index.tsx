@@ -24,7 +24,7 @@ import {
 
 import { cx } from "class-variance-authority";
 import { common, createLowlight } from "lowlight";
-import { HandsontableNode } from "./handsontable-extension";
+import { HandsontableNode } from "./spreadsheet/handsontable-extension";
 
 const aiHighlight = AIHighlight;
 //You can overwrite the placeholder with your own configuration

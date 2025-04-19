@@ -13,9 +13,9 @@ import {
   Youtube,
 } from "lucide-react";
 import { Command, createSuggestionItems, renderItems } from "novel";
-import { uploadFn } from "./image-upload";
-import { TableIcon } from "./icons/TableIcon";
-import { generateTableId } from "./handsontable-utils";
+import { uploadFn } from "../upload/image-upload";
+import { TableIcon } from "../../icons/TableIcon";
+import { generateTableId } from "../spreadsheet/handsontable-utils";
 
 export const suggestionItems = createSuggestionItems([
   {

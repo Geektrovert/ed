@@ -23,14 +23,14 @@ import { MathSelector } from "@/components/selectors/math-selector";
 import { NodeSelector } from "@/components/selectors/node-selector";
 import { Separator } from "@/components/ui/separator";
 
-import GenerativeMenuSwitch from "@/components/generative/generative-menu-switch";
-import { uploadFn } from "./image-upload";
+import GenerativeMenuSwitch from "@/components/editor/extensions/generative/generative-menu-switch";
+import { uploadFn } from "./extensions/upload/image-upload";
 import { TextButtons } from "@/components/selectors/text-buttons";
-import { slashCommand, suggestionItems } from "@/components/editor/slash";
+import { slashCommand, suggestionItems } from "@/components/editor/extensions/core/slash";
 
 import hljs from "highlight.js";
-import { findHandsontableNodes, extractHandsontableData } from "./handsontable-utils";
-import { processHandsontableInHtml } from "./processHandsontableInHtml";
+import { findHandsontableNodes, extractHandsontableData } from "./extensions/spreadsheet/handsontable-utils";
+import { processHandsontableInHtml } from "./extensions/spreadsheet/processHandsontableInHtml";
 
 const extensions = [...defaultExtensions, slashCommand];
 

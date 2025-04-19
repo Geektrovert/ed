@@ -13,8 +13,8 @@ import { Button } from "@/components/ui/button";
 import CrazySpinner from "@/components/icons/crazy-spinner";
 import Magic from "@/components/icons/magic";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import AICompletionCommands from "@/components/generative/ai-completion-command";
-import AISelectorCommands from "@/components/generative/ai-selector-commands";
+import AICompletionCommands from "@/components/editor/extensions/generative/ai-completion-command";
+import AISelectorCommands from "@/components/editor/extensions/generative/ai-selector-commands";
 
 interface AISelectorProps {
   open: boolean;

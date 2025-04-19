@@ -6,7 +6,7 @@ import { generateTableId } from "./handsontable-utils";
 import "handsontable/styles/handsontable.css";
 import "handsontable/styles/ht-theme-main.css";
 
-import "@/styles/handsontable-custom.css";
+import "./handsontable-custom.css";
 
 export const HandsontableNode = Node.create({
   name: "handsontableNode",
