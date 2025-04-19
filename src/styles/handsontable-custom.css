@@ -1,0 +1,274 @@
+/* Custom styles for Handsontable to match our editor's look and feel */
+
+/* Make all handsontable wrappers have rounded corners */
+.handsontable-wrapper {
+  margin: 1rem 0;
+  border-radius: 0.375rem;
+  overflow: hidden;
+}
+
+/* Main container styling */
+.handsontable-inner {
+  background-color: transparent !important;
+  font-family:
+    var(--font-sans),
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+}
+
+/* Make the table transparent so it blends with our theme */
+.handsontable {
+  background-color: transparent !important;
+}
+
+/* Table container - ensure borders match our design system */
+.handsontable-container {
+  border-radius: 0.375rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+/* Corner styling */
+.handsontable .htCore th.htDimmed {
+  color: hsl(var(--muted-foreground));
+  background-color: transparent;
+  font-family: "Cal Sans", var(--font-sans);
+  font-weight: 600;
+}
+
+/* Row headers */
+.handsontable .htCore th.ht__highlight,
+.handsontable .htCore th.ht__active_highlight {
+  background-color: hsl(var(--muted) / 0.15);
+  color: hsl(var(--foreground));
+  font-family: "Cal Sans", var(--font-sans);
+  font-weight: 600;
+}
+
+/* Column headers */
+.handsontable .htCore th {
+  background-color: hsl(var(--muted) / 0.15);
+  color: hsl(var(--foreground));
+  border-color: hsl(var(--border));
+  font-family: "Cal Sans", var(--font-sans);
+  font-weight: 600;
+}
+
+/* Selected header */
+.handsontable .htCore th.ht__active_highlight {
+  background-color: hsl(var(--muted) / 0.25);
+  color: hsl(var(--foreground));
+}
+
+/* All cells (td) */
+.handsontable .htCore td {
+  background-color: transparent;
+  color: hsl(var(--foreground));
+  border-color: hsl(var(--border));
+}
+
+/* Cell currently being edited */
+.handsontable .htCore td.htActive {
+  background-color: hsl(var(--muted) / 0.1);
+  border: 1px solid hsl(var(--border));
+}
+
+/* Selected cell */
+.handsontable .htCore td.area {
+  background-color: hsl(var(--primary) / 0.1);
+}
+
+/* Multiple selected cells */
+.handsontable .htCore td.area-1,
+.handsontable .htCore td.area-2,
+.handsontable .htCore td.area-3,
+.handsontable .htCore td.area-4 {
+  background-color: hsl(var(--primary) / 0.1);
+}
+
+/* Selection area */
+.handsontable .htCore tbody tr td.area {
+  background-color: hsl(var(--primary) / 0.1);
+}
+
+/* Input field for editing */
+.handsontable .htCore textarea,
+.handsontable .htCore input {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.25rem;
+}
+
+/* Context menu */
+.handsontable .htContextMenu * {
+  font-family: var(--font-sans);
+}
+
+.handsontable .htContextMenu table tbody tr td {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid hsl(var(--border) / 0.5);
+}
+
+.handsontable .htContextMenu table tbody tr td:hover {
+  background-color: hsl(var(--primary) / 0.1);
+}
+
+/* Context menu in dark mode */
+.dark .handsontable .htContextMenu {
+  background-color: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.dark .handsontable .htContextMenu table tbody tr td {
+  color: hsl(var(--foreground));
+}
+
+.dark .handsontable .htContextMenu table tbody tr td.htDisabled {
+  color: hsl(var(--muted-foreground));
+}
+
+/* Scrollbars - better match for the editor */
+.handsontable .htCore div::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.handsontable .htCore div::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.handsontable .htCore div::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--muted) / 0.5);
+  border-radius: 4px;
+}
+
+.handsontable .htCore div::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(var(--muted) / 0.7);
+}
+
+/* For Firefox */
+.handsontable .htCore div {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--muted) / 0.5) transparent;
+}
+
+/* Ensure table cells with formulas display correctly */
+.handsontable .htCore td.formula-result {
+  background-color: transparent;
+  color: hsl(var(--foreground));
+}
+
+/* Error display in cells */
+.handsontable .htCore td.formula-error {
+  background-color: hsl(var(--destructive) / 0.1);
+  color: hsl(var(--destructive));
+}
+
+/* Spreadsheet outside footer */
+.handsontable-wrapper .text-xs.text-muted-foreground {
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground));
+  background-color: hsl(var(--muted) / 0.1);
+  padding: 0.25rem 0.5rem;
+}
+
+/* Adjust keyboard shortcut styling */
+.handsontable-wrapper kbd {
+  font-family: var(--font-mono);
+  background-color: hsl(var(--muted) / 0.3);
+  color: hsl(var(--muted-foreground));
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.25rem;
+  border: 1px solid hsl(var(--border));
+  font-size: 0.7rem;
+  line-height: 1;
+}
+
+/* Table borders - ensure they're subtle */
+.handsontable .htCore td,
+.handsontable .htCore th {
+  border-right: 1px solid hsl(var(--border));
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+/* Dark mode specific overrides - with higher specificity */
+html.dark body .handsontable .htCore th.htDimmed {
+  background-color: hsl(var(--card)) !important;
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+html.dark body .handsontable .htCore th {
+  background-color: hsl(var(--muted) / 0.2) !important;
+  color: hsl(var(--foreground)) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+html.dark body .handsontable .htCore th.ht__highlight,
+html.dark body .handsontable .htCore th.ht__active_highlight {
+  background-color: hsl(var(--muted) / 0.3) !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Remove default backgrounds */
+html.dark body .handsontable .htCore .htDimmed {
+  background-color: transparent !important;
+}
+
+html.dark body .handsontable .htCore .ht__selection--columns,
+html.dark body .handsontable .htCore .ht__selection--rows {
+  background-color: hsl(var(--muted) / 0.25) !important;
+}
+
+/* Table cells */
+html.dark body .handsontable .htCore td {
+  background-color: hsl(var(--card)) !important;
+  color: hsl(var(--foreground)) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+html.dark body .handsontable .htCore tbody tr td {
+  background-color: hsl(var(--card)) !important;
+}
+
+html.dark body .handsontable .htCore td.htActive {
+  background-color: hsl(var(--muted) / 0.2) !important;
+}
+
+html.dark body .handsontable .htCore td.area,
+html.dark body .handsontable .htCore td.area-1,
+html.dark body .handsontable .htCore td.area-2,
+html.dark body .handsontable .htCore td.area-3,
+html.dark body .handsontable .htCore td.area-4,
+html.dark body .handsontable .htCore tbody tr td.area {
+  background-color: hsl(var(--primary) / 0.15) !important;
+}
+
+/* Selection border */
+html.dark body .handsontable .wtBorder {
+  background-color: hsl(var(--primary)) !important;
+}
+
+/* Checkboxes */
+html.dark body .handsontable .htCore input.htCheckboxRendererInput {
+  cursor: pointer;
+  background-color: hsl(var(--muted) / 0.3) !important;
+  border: 1px solid hsl(var(--border)) !important;
+}
+
+html.dark body .handsontable .htCore input.htCheckboxRendererInput:checked {
+  background-color: hsl(var(--primary)) !important;
+}
+
+/* This should force removal of any white backgrounds */
+html.dark body .handsontable .htCore .wtHolder,
+html.dark body .handsontable .wtHolder,
+html.dark body .handsontable .wtHider,
+html.dark body .handsontable-inner,
+html.dark body .handsontable .htCore {
+  background-color: transparent !important;
+}

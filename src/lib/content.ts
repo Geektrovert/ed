@@ -59,6 +59,48 @@ export const defaultEditorContent = {
     {
       type: "heading",
       attrs: { level: 3 },
+      content: [{ type: "text", text: "Interactive Spreadsheet Example" }],
+    },
+    {
+      type: "paragraph",
+      content: [
+        { 
+          type: "text", 
+          text: "Below is an interactive spreadsheet with formulas. You can click on cells to edit them, use Tab to navigate, and right-click for more options." 
+        },
+      ],
+    },
+    {
+      type: "handsontableNode",
+      attrs: {
+        id: "table-demo-1",
+        title: "Budget Tracker",
+        data: [
+          ["Category", "January", "February", "March", "Q1 Total", "Notes"],
+          ["Income", 5000, 5200, 5400, "=SUM(B2:D2)", "Monthly salary + freelance"],
+          ["Rent", -1500, -1500, -1500, "=SUM(B3:D3)", "Fixed expense"],
+          ["Utilities", -200, -250, -180, "=SUM(B4:D4)", "Varies by season"],
+          ["Groceries", -600, -550, -580, "=SUM(B5:D5)", "Weekly shopping"],
+          ["Entertainment", -350, -300, -400, "=SUM(B6:D6)", "Movies, games, etc."],
+          ["Savings", "=SUM(B2:B6)", "=SUM(C2:C6)", "=SUM(D2:D6)", "=SUM(E2:E6)", "Monthly remainder"],
+          ["Savings Rate", "=B7/B2", "=C7/C2", "=D7/D2", "=E7/E2", "Percent of income saved"]
+        ],
+        formulas: [],
+        namedExpressions: [
+          { name: "TotalIncome", expression: "SUM(B2:D2)" },
+          { name: "TotalExpenses", expression: "SUM(B3:D6)" }
+        ],
+        config: {
+          colHeaders: true,
+          rowHeaders: true,
+          height: "auto",
+          licenseKey: "non-commercial-and-evaluation"
+        }
+      }
+    },
+    {
+      type: "heading",
+      attrs: { level: 3 },
       content: [{ type: "text", text: "Core Principles" }],
     },
     {

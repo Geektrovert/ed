@@ -24,6 +24,7 @@ import {
 
 import { cx } from "class-variance-authority";
 import { common, createLowlight } from "lowlight";
+import { HandsontableNode } from "./handsontable-extension";
 
 const aiHighlight = AIHighlight;
 //You can overwrite the placeholder with your own configuration
@@ -169,4 +170,5 @@ export const defaultExtensions = [
   Color,
   CustomKeymap,
   GlobalDragHandle,
+  HandsontableNode,
 ];

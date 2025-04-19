@@ -14,7 +14,7 @@ import {
   handleImageDrop,
   handleImagePaste,
 } from "novel";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { defaultExtensions } from "./extensions";
 import { ColorSelector } from "@/components/selectors/color-selector";
@@ -29,10 +29,15 @@ import { TextButtons } from "@/components/selectors/text-buttons";
 import { slashCommand, suggestionItems } from "@/components/editor/slash";
 
 import hljs from "highlight.js";
+import { findHandsontableNodes, extractHandsontableData } from "./handsontable-utils";
+import { processHandsontableInHtml } from "./processHandsontableInHtml";
 
 const extensions = [...defaultExtensions, slashCommand];
 
-const TailwindAdvancedEditor = () => {
+const TailwindAdvancedEditor = ({ editorId, onDebouncedUpdate }: { 
+  editorId?: string;
+  onDebouncedUpdate?: (html: string, content: JSONContent) => void;
+}) => {
   const [initialContent, setInitialContent] = useState<null | JSONContent>(
     null
   );
@@ -43,6 +48,8 @@ const TailwindAdvancedEditor = () => {
   const [openColor, setOpenColor] = useState(false);
   const [openLink, setOpenLink] = useState(false);
   const [openAI, setOpenAI] = useState(false);
+
+  const editorRef = useRef<EditorInstance | null>(null);
 
   //Apply Codeblock Highlighting on the HTML from editor.getHTML()
   const highlightCodeblocks = (content: string) => {
@@ -56,22 +63,147 @@ const TailwindAdvancedEditor = () => {
   };
 
   const debouncedUpdates = useDebouncedCallback(
-    async (editor: EditorInstance) => {
-      const json = editor.getJSON();
-      setCharsCount(editor.storage.characterCount.words());
-      window.localStorage.setItem(
-        "html-content",
-        highlightCodeblocks(editor.getHTML())
-      );
-      window.localStorage.setItem("novel-content", JSON.stringify(json));
-      window.localStorage.setItem(
-        "markdown",
-        editor.storage.markdown?.getMarkdown()
-      );
-      setSaveStatus("Saved");
+    (html: string) => {
+      try {
+        if (!editorRef.current) return;
+        const editor = editorRef.current;
+        
+        // First, extract the current editor JSON
+        const content = editor.getJSON();
+        
+        // Make sure we have content to avoid errors
+        if (!content) {
+          console.warn("No content available in editor");
+          return;
+        }
+        
+        // Extract Handsontable data for debugging and persistence
+        const handsontableTables = findHandsontableNodes(content);
+        const handsontableData = extractHandsontableData(content);
+        
+        if (handsontableTables.length > 0) {
+          console.log(`Found ${handsontableTables.length} Handsontable tables`);
+        }
+        
+        // Process the HTML to ensure it's valid
+        const processedHtml = processHandsontableInHtml(html);
+        if (!processedHtml || processedHtml.trim() === '') {
+          console.warn("Empty HTML content after processing");
+        }
+        
+        // Serialize content to HTML (includes Handsontable data)
+        // and store in localStorage along with JSON
+        if (typeof window !== "undefined") {
+          let storageKey = "tiptap";
+          if (editorId) {
+            storageKey = `tiptap-${editorId}`;
+          }
+          
+          try {
+            // For better performance, only stringify once
+            const jsonString = JSON.stringify(content);
+            
+            // Store the HTML content
+            localStorage.setItem(`${storageKey}-html`, processedHtml);
+            
+            // Store the JSON content 
+            localStorage.setItem(`${storageKey}-json`, jsonString);
+            
+            // Also store Handsontable data separately if we have any tables
+            if (Object.keys(handsontableData).length > 0) {
+              localStorage.setItem(
+                `${storageKey}-handsontable`,
+                JSON.stringify(handsontableData)
+              );
+            }
+            
+            // Update save status
+            setSaveStatus("Saved");
+            
+            // Call the callback if provided
+            if (onDebouncedUpdate) {
+              onDebouncedUpdate(processedHtml, content);
+            }
+          } catch (storageError) {
+            console.error("Failed to store content:", storageError);
+            setSaveStatus("Error saving");
+          }
+        }
+      } catch (error) {
+        console.error("[Editor] Error in debouncedUpdates:", error);
+        setSaveStatus("Error saving");
+      }
     },
-    500
+    // Using 300ms instead of 500ms for better responsiveness while maintaining 
+    // efficient batching
+    300
   );
+
+  // Safe method to get HTML from editor with error handling
+  const getSafeHTML = useCallback((editor: EditorInstance) => {
+    try {
+      return editor.getHTML();
+    } catch (error) {
+      console.error("Error getting HTML from editor:", error);
+      
+      // Create a simple version from JSON content
+      try {
+        const json = editor.getJSON();
+        return processHandsontableInHtml(createSimpleHTML(json));
+      } catch (innerError) {
+        console.error("Failed to create fallback HTML:", innerError);
+        return "<p>Error rendering content</p>";
+      }
+    }
+  }, []);
+  
+  // Create a simplified HTML version from JSON content
+  const createSimpleHTML = useCallback((json: JSONContent) => {
+    if (!json.content) return "<p></p>";
+    
+    let html = "";
+    
+    // Simple recursive function to convert to HTML
+    const processNode = (node: any) => {
+      if (node.type === "paragraph") {
+        let inner = "";
+        if (node.content) {
+          node.content.forEach((child: any) => {
+            inner += processNode(child);
+          });
+        }
+        return `<p>${inner || "<br>"}</p>`;
+      } else if (node.type === "text") {
+        let text = node.text || "";
+        if (node.marks) {
+          node.marks.forEach((mark: any) => {
+            if (mark.type === "bold") text = `<strong>${text}</strong>`;
+            if (mark.type === "italic") text = `<em>${text}</em>`;
+            // Add other marks as needed
+          });
+        }
+        return text;
+      } else if (node.type === "handsontableNode") {
+        return `<div data-type="handsontable" data-id="${node.attrs?.id || ''}" data-title="${node.attrs?.title || 'Spreadsheet'}"></div>`;
+      } else if (node.content) {
+        let inner = "";
+        node.content.forEach((child: any) => {
+          inner += processNode(child);
+        });
+        return inner;
+      }
+      
+      return "";
+    };
+    
+    if (json.content) {
+      json.content.forEach((node: any) => {
+        html += processNode(node);
+      });
+    }
+    
+    return html || "<p></p>";
+  }, []);
 
   useEffect(() => {
     const content = window.localStorage.getItem("novel-content");
@@ -116,8 +248,13 @@ const TailwindAdvancedEditor = () => {
             },
           }}
           onUpdate={({ editor }) => {
-            debouncedUpdates(editor);
-            setSaveStatus("Unsaved");
+            editorRef.current = editor;
+            
+            // Use the safe HTML getter to avoid serialization errors
+            const html = getSafeHTML(editor);
+            
+            // Then update with the safe HTML
+            debouncedUpdates(html);
           }}
           slotAfter={<ImageResizer />}
         >

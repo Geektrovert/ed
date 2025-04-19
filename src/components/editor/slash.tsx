@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import { Command, createSuggestionItems, renderItems } from "novel";
 import { uploadFn } from "./image-upload";
+import { TableIcon } from "./icons/TableIcon";
+import { generateTableId } from "./handsontable-utils";
 
 export const suggestionItems = createSuggestionItems([
   {
@@ -195,6 +197,42 @@ export const suggestionItems = createSuggestionItems([
           alert("Please enter a correct Twitter Link");
         }
       }
+    },
+  },
+  {
+    title: "Spreadsheet",
+    description: "Insert an interactive spreadsheet with formulas.",
+    searchTerms: ["table", "excel", "spreadsheet", "grid", "formula", "handsontable"],
+    icon: <TableIcon size={18} />,
+    command: ({ editor, range }) => {
+      // Generate a unique ID for this table
+      const tableId = generateTableId();
+      
+      editor
+        .chain()
+        .focus()
+        .deleteRange(range)
+        .insertContent({
+          type: "handsontableNode",
+          attrs: {
+            id: tableId,
+            title: "Spreadsheet",
+            data: [
+              ["", "", ""],
+              ["", "", ""],
+              ["", "", ""]
+            ],
+            formulas: [],
+            namedExpressions: [],
+            config: {
+              colHeaders: true,
+              rowHeaders: true,
+              height: "auto",
+              licenseKey: "non-commercial-and-evaluation"
+            }
+          }
+        })
+        .run();
     },
   },
 ]);
