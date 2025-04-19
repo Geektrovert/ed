@@ -1,47 +1,28 @@
-import localFont from "next/font/local";
-import { Crimson_Text, Inconsolata, Inter } from "next/font/google";
+// Import fontsource packages
+import "@fontsource-variable/inconsolata/wght.css";
+import "@fontsource-variable/inter/wght.css";
+import "@fontsource/crimson-text/400.css";
+import "@fontsource/crimson-text/700.css";
+// @ts-ignore
+import "cal-sans";
 
-export const cal = localFont({
-  src: "./CalSans-SemiBold.otf",
-  variable: "--font-title",
-});
+// Define CSS variables to be used in the app
+export const cal = "var(--font-title)";
+export const crimsonBold = "var(--font-title)";
+export const inter = "var(--font-default)";
+export const inconsolataBold = "var(--font-title)";
+export const crimson = "var(--font-default)";
+export const inconsolata = "var(--font-default)";
 
-export const crimsonBold = Crimson_Text({
-  weight: "700",
-  variable: "--font-title",
-  subsets: ["latin"],
-});
-
-export const inter = Inter({
-  variable: "--font-default",
-  subsets: ["latin"],
-});
-
-export const inconsolataBold = Inconsolata({
-  weight: "700",
-  variable: "--font-title",
-  subsets: ["latin"],
-});
-
-export const crimson = Crimson_Text({
-  weight: "400",
-  variable: "--font-default",
-  subsets: ["latin"],
-});
-
-export const inconsolata = Inconsolata({
-  variable: "--font-default",
-  subsets: ["latin"],
-});
-
+// Font family mapping 
 export const titleFontMapper = {
-  Default: cal.variable,
-  Serif: crimsonBold.variable,
-  Mono: inconsolataBold.variable,
+  Default: "\"Cal Sans\", sans-serif",
+  Serif: "\"Crimson Text\", serif",
+  Mono: "Inconsolata, monospace",
 };
 
 export const defaultFontMapper = {
-  Default: inter.variable,
-  Serif: crimson.variable,
-  Mono: inconsolata.variable,
+  Default: "Inter, sans-serif",
+  Serif: "\"Crimson Text\", serif",
+  Mono: "Inconsolata, monospace",
 };

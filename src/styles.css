@@ -4,6 +4,9 @@
 
 @layer base {
   :root {
+    --font-default: "Inter", system-ui, sans-serif;
+    --font-title: "Cal Sans", sans-serif;
+
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
@@ -46,6 +49,9 @@
   }
 
   .dark {
+    --font-default: "Inter", system-ui, sans-serif;
+    --font-title: "Cal Sans", sans-serif;
+
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
 
@@ -90,6 +96,40 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Style adjustments for Cal Sans as recommended in their README */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Cal Sans", sans-serif;
+}
+
+h1 {
+  font-size: 56px;
+}
+h2 {
+  font-size: 40px;
+  letter-spacing: 0.01em;
+}
+h3 {
+  font-size: 36px;
+  letter-spacing: 0.015em;
+}
+h4 {
+  font-size: 28px;
+  letter-spacing: 0.02em;
+}
+h5 {
+  font-size: 20px;
+  letter-spacing: 0.03em;
+}
+h6 {
+  font-size: 16px;
+  letter-spacing: 0.04em;
 }
 
 pre {

@@ -1,36 +1,21 @@
 "use client";
 
 import { Check, Menu as MenuIcon, Monitor, Moon, SunDim } from "lucide-react";
-import { useTheme } from "next-themes";
+import { useTheme, type Theme } from "@/components/providers";
 import { Button } from "./button";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 
-// TODO implement multiple fonts editor
-// const fonts = [
-//   {
-//     font: "Default",
-//     icon: <FontDefault className="h-4 w-4" />,
-//   },
-//   {
-//     font: "Serif",
-//     icon: <FontSerif className="h-4 w-4" />,
-//   },
-//   {
-//     font: "Mono",
-//     icon: <FontMono className="h-4 w-4" />,
-//   },
-// ];
-const appearances = [
+const appearances: { theme: Theme; icon: React.ReactNode }[] = [
   {
-    theme: "System",
+    theme: "system",
     icon: <Monitor className="h-4 w-4" />,
   },
   {
-    theme: "Light",
+    theme: "light",
     icon: <SunDim className="h-4 w-4" />,
   },
   {
-    theme: "Dark",
+    theme: "dark",
     icon: <Moon className="h-4 w-4" />,
   },
 ];
@@ -75,14 +60,14 @@ export default function Menu() {
             key={theme}
             className="flex w-full items-center justify-between rounded px-2 py-1.5 text-sm"
             onClick={() => {
-              setTheme(theme.toLowerCase());
+              setTheme(theme);
             }}
           >
             <div className="flex items-center space-x-2">
               <div className="rounded-sm border  p-1">{icon}</div>
-              <span>{theme}</span>
+              <span>{`${theme.charAt(0).toUpperCase() + theme.slice(1)}`}</span>
             </div>
-            {currentTheme === theme.toLowerCase() && (
+            {currentTheme === theme && (
               <Check className="h-4 w-4" />
             )}
           </Button>

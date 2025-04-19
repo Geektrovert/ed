@@ -1,9 +1,26 @@
-"use client";
-
-import { createContext, type ReactNode } from "react";
-import { ThemeProvider, useTheme } from "next-themes";
+import { createContext, useContext, useEffect } from "react"
 import { Toaster } from "sonner";
 import useLocalStorage from "@/hooks/use-local-storage";
+
+export type Theme = "dark" | "light" | "system"
+
+type ThemeProviderProps = {
+  children: React.ReactNode
+  defaultTheme?: Theme
+  storageKey?: string
+}
+
+type ThemeProviderState = {
+  theme: Theme
+  setTheme: (theme: Theme) => void
+}
+
+const initialState: ThemeProviderState = {
+  theme: "system",
+  setTheme: () => null,
+}
+
+const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
 
 export const AppContext = createContext<{
   font: string;
@@ -20,25 +37,56 @@ const ToasterProvider = () => {
   return <Toaster theme={theme} />;
 };
 
-export default function Providers({ children }: { children: ReactNode }) {
+export function Providers({
+  children,
+  defaultTheme = "system",
+  storageKey = "vite-ui-theme",
+  ...props
+}: ThemeProviderProps) {
   const [font, setFont] = useLocalStorage<string>("novel__font", "Default");
+  const [theme, setTheme] = useLocalStorage<Theme>(storageKey, defaultTheme);
+
+  useEffect(() => {
+    const root = window.document.documentElement
+
+    root.classList.remove("light", "dark")
+
+    if (theme === "system") {
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+        .matches
+        ? "dark"
+        : "light"
+
+      root.classList.add(systemTheme)
+      return
+    }
+
+    root.classList.add(theme)
+  }, [theme])
+
+  const value = {
+    theme,
+    setTheme: (theme: Theme) => {
+      localStorage.setItem(storageKey, theme)
+      setTheme(theme)
+    },
+  }
 
   return (
-    <ThemeProvider
-      attribute="class"
-      enableSystem
-      disableTransitionOnChange
-      defaultTheme="system"
-    >
-      <AppContext.Provider
-        value={{
-          font,
-          setFont,
-        }}
-      >
-        <ToasterProvider />
+    <ThemeProviderContext.Provider {...props} value={value}>
+      <ToasterProvider />
+      <AppContext.Provider value={{ font, setFont }}>
         {children}
       </AppContext.Provider>
-    </ThemeProvider>
-  );
+    </ThemeProviderContext.Provider>
+  )
+}
+
+export const useTheme = () => {
+  const context = useContext(ThemeProviderContext)
+
+  if (context === undefined)
+    throw new Error("useTheme must be used within a ThemeProvider")
+
+  return context
 }
