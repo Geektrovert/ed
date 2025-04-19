@@ -1,0 +1,10 @@
+{
+	"recommendations": [
+		"biomejs.biome",
+		"YoavBls.pretty-ts-errors",
+		"bradlc.vscode-tailwindcss",
+		"aaron-bond.better-comments",
+		"WallabyJs.console-ninja",
+		"quick-lint.quick-lint-js"
+	]
+}

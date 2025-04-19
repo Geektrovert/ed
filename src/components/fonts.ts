@@ -14,15 +14,15 @@ export const inconsolataBold = "var(--font-title)";
 export const crimson = "var(--font-default)";
 export const inconsolata = "var(--font-default)";
 
-// Font family mapping 
+// Font family mapping
 export const titleFontMapper = {
-  Default: "\"Cal Sans\", sans-serif",
-  Serif: "\"Crimson Text\", serif",
-  Mono: "Inconsolata, monospace",
+	Default: '"Cal Sans", sans-serif',
+	Serif: '"Crimson Text", serif',
+	Mono: "Inconsolata, monospace",
 };
 
 export const defaultFontMapper = {
-  Default: "Inter, sans-serif",
-  Serif: "\"Crimson Text\", serif",
-  Mono: "Inconsolata, monospace",
+	Default: "Inter, sans-serif",
+	Serif: '"Crimson Text", serif',
+	Mono: "Inconsolata, monospace",
 };
